@@ -10,7 +10,7 @@ object JsonPullBuild extends Build {
       Seq(
         sbtPlugin := false, 
         organization := "org.scalastuff",
-        version := "1.0.0-SNAPSHOT",
+        version := "1.0.0",
         scalaVersion := "2.10.4",
         crossScalaVersions := Seq("2.10.4", "2.11.0"),
         scalacOptions ++= Seq("-deprecation", "-unchecked", "-encoding", "utf8", "-feature"),
