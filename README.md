@@ -22,6 +22,8 @@ The json-parser can be obtained from maven central, cross-built against scala 2.
   "org.scalastuff" %% "json-parser" % "1.0.0"
 ```
 
+#### Parse spray-json
+
 To parse a string to spray-json:
 
 ```scala
@@ -38,3 +40,15 @@ When the parser is not used by multiple threads, one can re-use a parser instanc
   def parse(s: String) = 
     parser.parse(s)
 ```
+
+#### Using a JsonHandler
+
+To use the streaming interface directly, one should implement the handler, and call the parser:
+
+```scala
+  import org.scalastuff.json.spray.SprayJsonParser
+  val parser = new SprayJsonParser
+  def parse(s: String) = 
+    parser.parse(s)
+```
+
