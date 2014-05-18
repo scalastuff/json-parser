@@ -12,7 +12,7 @@ The core parser is not tied to any particular AST implementation. Through the st
 
 #### Provide streaming interface
 
-The parser streams it result into a json [handler](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/JsonHandler.scala). The handler gets events from the parser and can act accordingly. The parser does not hold any state.
+The parser streams its result into a json [handler](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/JsonHandler.scala). The handler gets events from the parser and can act accordingly. The parser does not hold any state.
 
 ## Usage
 
