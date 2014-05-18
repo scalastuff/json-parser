@@ -46,8 +46,9 @@ When the parser is not used by multiple threads, one can re-use a parser instanc
 To use the streaming interface directly, one should implement the handler, and call the parser:
 
 ```scala
-  import org.scalastuff.json.spray.SprayJsonParser
-  val parser = new SprayJsonParser
+  import org.scalastuff.json._
+  val handler: JsonHandler = new MyJsonHandler
+  val parser = new JsonParser(handler)
   def parse(s: String) = 
     parser.parse(s)
 ```
