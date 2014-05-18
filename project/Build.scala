@@ -45,5 +45,6 @@ object JsonPullBuild extends Build {
   val jsonParser = Project(id = "json-parser", base = file("."), settings = defaultSettings ++ publishSettings ++ Seq(
     libraryDependencies += "io.spray" %% "spray-json" % "1.2.6" % "optional" withSources(),
     libraryDependencies += "org.specs2" %% "specs2" % "2.3.12" % "test" withSources(),
-    resolvers += "spray repo" at "http://repo.spray.io"))
+    resolvers += "spray repo" at "http://repo.spray.io",
+    mainClass in (Compile, run) := Some("org.scalastuff.json.PerformanceTests")))
 }

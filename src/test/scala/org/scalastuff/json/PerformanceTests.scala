@@ -4,6 +4,17 @@ import scala.util.parsing.json.JSON
 import org.scalastuff.json.spray.SprayJsonParser
 import org.parboiled.common.FileUtils
 import _root_.spray.json.JsonParser
+import org.specs2.mutable.Specification
+
+class PerformanceTests extends Specification {
+
+  "The SprayJsonParser" should {
+    "be fast" in {
+      PerformanceTests.main(Array())
+      1 mustEqual 1
+    }
+  }
+}
 
 object PerformanceTests extends App {
   val sprayPullParser = new SprayJsonParser  
