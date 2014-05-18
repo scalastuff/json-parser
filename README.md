@@ -29,3 +29,12 @@ To parse a string to spray-json:
   def parse(s: String) = 
     SprayJsonParser.parse(s)
 ```
+
+When the parser is not used by multiple threads, one can re-use a parser instance:
+
+```scala
+  import org.scalastuff.json.spray.SprayJsonParser
+  val parser = new SprayJsonParser
+  def parse(s: String) = 
+    parser.parse(s)
+```
