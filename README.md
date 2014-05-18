@@ -1,16 +1,31 @@
-json-parser
-================
+## json-parser
 
 JSON parser with the following aims:
-- As fast as possible
-- Support multiple JSON AST's
-- Provide streaming interface
+
+#### As fast as possible
+
+The parser is hand-crafted, resulting in very good performance. It's up to par with Jackson, more than 350 times faster than the default json parser (that shipped with scala until 2.10), and more than 15 times faster than the Spray parser.
+
+#### Support multiple JSON AST's
+
+The core parser is not tied to any particular AST implementation. Through the streaming interface, any AST can be built. The parser currently ships with a spray-json parser. 
+
+#### Provide streaming interface
+
+The parser streams it result into a json [handler](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/JsonHandler.scala). The handler gets events from the parser and can act accordingly. The parser does not hold any state.
+
+## Usage
+
+The json-parser is located at maven central, cross-built against scala 2.10 and 2.11:
 
 ```scala
-	"org.scalastuff" %% "json-pull-parser" % "1.0.0"
+  "org.scalastuff" %% "json-parser" % "1.0.0"
 ```
 
-performance
-===========
+To parse a string to spray-json:
 
-The parser is hand-crafted, resulting in very good performance. It's up to par with Jackson, more than 350 times faster than the default json parser (that shipped with scala until 2.10), and about 25 times faster than the Spray parser.
+```scala
+  import org.scalastuff.json.spray.SprayJsonParser
+  def parse(s: String) = 
+    SprayJsonParser.parse(s)
+```
