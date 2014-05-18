@@ -16,7 +16,7 @@ The parser streams it result into a json [handler](https://github.com/scalastuff
 
 ## Usage
 
-The json-parser is located at maven central, cross-built against scala 2.10 and 2.11:
+The json-parser can be obtained from maven central, cross-built against scala 2.10 and 2.11:
 
 ```scala
   "org.scalastuff" %% "json-parser" % "1.0.0"
