@@ -11,7 +11,8 @@ object JsonPullParserBuild extends Build {
         sbtPlugin := false, 
         organization := "net.scalaleafs",
         version := "1.0.0-SNAPSHOT",
-        scalaVersion := "2.10.3",
+        scalaVersion := "2.10.4",
+        crossScalaVersions := Seq("2.10.4", "2.11.0"),
         scalacOptions ++= Seq("-deprecation", "-unchecked", "-encoding", "utf8", "-feature"),
         //scalacOptions ++= Seq("-language:implicitConversions", "-language:postfixOps", "-language:reflectiveCall", "-language:higherKinds", "-language:existentials", "-language:reflectiveCalls"),
         EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource,
@@ -44,7 +45,6 @@ object JsonPullParserBuild extends Build {
     
   val jsonPullParser = Project(id = "json-pull-parser", base = file("."), settings = defaultSettings ++ publishSettings ++ Seq(
     libraryDependencies += "io.spray" %% "spray-json" % "1.2.6" % "optional" withSources(),
-    libraryDependencies += "org.scalatest" %% "scalatest" % "2.0" % "test" withSources(),
-    libraryDependencies += "org.specs2" %% "specs2" % "2.3.10" % "test" withSources(),
+    libraryDependencies += "org.specs2" %% "specs2" % "2.3.12" % "test" withSources(),
     resolvers += "spray repo" at "http://repo.spray.io"))
 }

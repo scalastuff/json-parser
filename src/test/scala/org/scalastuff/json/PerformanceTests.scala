@@ -2,13 +2,11 @@ package org.scalastuff.json
 
 import scala.util.parsing.json.JSON
 import org.scalastuff.json.spray.SprayJsonParser
-import org.scalastuff.json.stdjson.StdJsonParser
 import org.parboiled.common.FileUtils
 import _root_.spray.json.JsonParser
 
 object PerformanceTests extends App {
   val sprayPullParser = new SprayJsonParser  
-  val stdPullParser = new StdJsonParser  
   val largeJsonSource = FileUtils.readAllCharsFromResource("test.json")
   val largeJsonSourceString = new String(FileUtils.readAllCharsFromResource("test.json"))
     
@@ -36,8 +34,6 @@ object PerformanceTests extends App {
   
   refTime = run("Bare pull parser", 100, UnitJsonParser.parse(largeJsonSource))
   run("Spray pull parser", 100, sprayPullParser.parse(largeJsonSource))
-  run("Standard pull parser", 100, stdPullParser.parse(largeJsonSource))
   run("Original spray parser", 100, JsonParser(largeJsonSource))
-  run("Original standard parser", 10, JSON.parseFull(largeJsonSourceString))
 
 }
