@@ -1,6 +1,6 @@
 package org.scalastuff.json
 
-class JsonPullParser[H <: JsonHandler](handler: H) {
+class JsonParser[H <: JsonHandler](handler: H) {
 
   private var s: Array[Char] = Array.empty
   private var i: Int = 0

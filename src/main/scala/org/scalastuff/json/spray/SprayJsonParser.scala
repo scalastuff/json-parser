@@ -1,8 +1,8 @@
 package org.scalastuff.json.spray
 
-import org.scalastuff.json.JsonPullParser
+import org.scalastuff.json.JsonParser
 
-class SprayJsonParser extends JsonPullParser(SprayJsonBuilder)
+class SprayJsonParser extends JsonParser(SprayJsonBuilder)
 
 object SprayJsonParser {
   def parse(s: String) =

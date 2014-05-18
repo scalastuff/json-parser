@@ -20,4 +20,4 @@ object UnitJsonHandler extends JsonHandler {
   def nullValue = Unit
 }
 
-object UnitJsonParser extends JsonPullParser(UnitJsonHandler)
+object UnitJsonParser extends JsonParser(UnitJsonHandler)
