@@ -8,7 +8,7 @@ class FastStringReader(s : Array[Char], offset: Int, len: Int) extends Reader {
   def this(s: String) = this(s.toCharArray, 0, s.size)
   
   private val end: Int = offset + len
-  private var pos: Int = 0
+  private var pos: Int = offset
   
   override def read(): Int = 
     if (pos < end) {
