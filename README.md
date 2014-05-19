@@ -19,7 +19,7 @@ The parser streams its result into a json [handler](https://github.com/scalastuf
 The json-parser can be obtained from maven central, cross-built against scala 2.10 and 2.11:
 
 ```scala
-  "org.scalastuff" %% "json-parser" % "1.1.0"
+  "org.scalastuff" %% "json-parser" % "1.1.1"
 ```
 
 ## Usage
@@ -49,7 +49,7 @@ Note that a parser instance is NOT thread safe. It can be re-used though, and on
 
 ## Spray parser
 
-The parser ships with a built-in spray parser, targetting the spray AST:
+The parser ships with a built-in spray parser, targeting the spray AST:
 
 ```scala
   import spray.json.JsValue

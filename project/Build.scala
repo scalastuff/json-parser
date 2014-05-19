@@ -3,14 +3,14 @@ import Keys._
 import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseKeys
 import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseCreateSrc
 
-object JsonPullBuild extends Build {
+object JsonBuild extends Build {
 
   def defaultSettings =
     Project.defaultSettings ++
       Seq(
         sbtPlugin := false, 
         organization := "org.scalastuff",
-        version := "1.1.1-SNAPHOT",
+        version := "1.1.1",
         scalaVersion := "2.10.4",
         crossScalaVersions := Seq("2.10.4", "2.11.0"),
         scalacOptions ++= Seq("-deprecation", "-unchecked", "-encoding", "utf8", "-feature"),
@@ -43,8 +43,9 @@ object JsonPullBuild extends Build {
 
     
   val jsonParser = Project(id = "json-parser", base = file("."), settings = defaultSettings ++ publishSettings ++ Seq(
-    libraryDependencies += "io.spray" %% "spray-json" % "1.2.6" % "optional" withSources(),
-    libraryDependencies += "org.specs2" %% "specs2" % "2.3.12" % "test" withSources(),
+    libraryDependencies += "io.spray" %% "spray-json" % "1.2.6" % "optional",
+    libraryDependencies += "org.specs2" %% "specs2" % "2.3.12" % "test",
     resolvers += "spray repo" at "http://repo.spray.io",
+    resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo),
     mainClass in (Compile, run) := Some("org.scalastuff.json.PerformanceTests")))
 }
