@@ -11,6 +11,7 @@
 package org.scalastuff.json.spray
 
 import org.scalastuff.json.JsonParser
+import java.io.Reader
 
 class SprayJsonParser extends JsonParser(SprayJsonBuilder)
 
@@ -20,6 +21,9 @@ object SprayJsonParser {
 
   def parse(s: Array[Char]) =
     (new SprayJsonParser).parse(s)
+
+  def parse(r: Reader) =
+    (new SprayJsonParser).parse(r)
 
 }
 
