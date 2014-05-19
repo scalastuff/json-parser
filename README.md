@@ -43,7 +43,7 @@ The return type of these methods is determined by the provided handler.
 
 The `Reader` overload allows streaming some JSON input into the parser. The document will be processed character-by-character, the input will not be read into memory.
 
-The `String` and `Array[Char]` overloads are wrappers around the `Reader` overload, but they use an optimized reader (`org.scalastuff.json.FastStringReader`). Compared to using `java.io.StringReader` and `java.io.CharArrayReader`, expect about a a 50% speedup.
+The `String` and `Array[Char]` overloads are wrappers around the `Reader` overload, but they use an optimized reader, [FastStringReader](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/FastStringReader.scala). Compared to using `java.io.StringReader` and `java.io.CharArrayReader`, expect a speedup of around 50%.
 
 Note that a parser instance is NOT thread safe. It can be re-used though, and one is advised to do so. 
 
