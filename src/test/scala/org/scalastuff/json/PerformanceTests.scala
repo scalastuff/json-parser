@@ -55,7 +55,6 @@ object PerformanceTests extends App {
     time
   }
   
-  println("Test JSON parsing performance")
   refTime = run("Unit parser", 200, UnitJsonParser.parse(largeJsonSource))
   run("Spray parser", 200, sprayParser.parse(largeJsonSource))
   run("Spray parser (non-fast CharArrayReader)", 200, sprayParser.parse(new CharArrayReader(largeJsonSource)))
