@@ -61,8 +61,6 @@ The parser ships with a built-in spray parser, targeting the spray AST:
 It also has an 'object' interface, that adds some convenience, especially in a multi-threaded environment:
 
 ```scala
-  import spray.json.JsValue
-  import org.scalastuff.json.spray.SprayJsonParser
   val result: JsValue = SprayJsonParser.parse(someJson)
 ```
 
