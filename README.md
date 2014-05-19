@@ -39,6 +39,8 @@ The parser has parse overloads:
   def parse(source: Array[Char])
 ```
 
+The return type of these methods is determined by the provided handler.
+
 The `Reader` overload allows streaming some JSON input into the parser. The document will be processed character-by-character, the input will not be read into memory.
 
 The `String` and `Array[Char]` overloads are wrappers around the `Reader` overload, but they use an optimized reader (`org.scalastuff.json.FastStringReader`). Compared to using `java.io.StringReader` and `java.io.CharArrayReader`, expect about a a 50% speedup.
