@@ -10,11 +10,13 @@
  */
 package org.scalastuff.json
 
+import java.io.CharArrayReader
+import java.io.StringReader
 import scala.util.parsing.json.JSON
-import org.scalastuff.json.spray.SprayJsonParser
 import org.parboiled.common.FileUtils
-import _root_.spray.json.JsonParser
+import org.scalastuff.json.spray.SprayJsonParser
 import org.specs2.mutable.Specification
+import _root_.spray.json.{ JsonParser => OriginalSprayParser }
 
 class PerformanceTests extends Specification {
 
@@ -27,7 +29,7 @@ class PerformanceTests extends Specification {
 }
 
 object PerformanceTests extends App {
-  val sprayPullParser = new SprayJsonParser  
+  val sprayParser = new SprayJsonParser  
   val largeJsonSource = FileUtils.readAllCharsFromResource("test.json")
   val largeJsonSourceString = new String(FileUtils.readAllCharsFromResource("test.json"))
     
@@ -35,7 +37,7 @@ object PerformanceTests extends App {
   
   def run(descr: String, count: Int, parse: => Any) = {
     // warm up
-    for (i <- 0 to count) {
+    for (i <- 0 to count * 4) {
       parse
     }
     // give hotspot some time
@@ -47,14 +49,17 @@ object PerformanceTests extends App {
     val end = System.nanoTime - start
     val time = end/count.toDouble
     if (refTime > 0)
-      println(f"${descr.padTo(25, ' ')}%s: ${time/1000000.0}%2.2f msec, speedup: ${(time/refTime).toInt}%dx")
+      println(f"${descr.padTo(40, ' ')}%s: ${time/1000000.0}%2.2f msec, speedup: ${(time/refTime)}%.1fx")
     else
-      println(f"${descr.padTo(25, ' ')}%s: ${time/1000000.0}%2.2f msec")
+      println(f"${descr.padTo(40, ' ')}%s: ${time/1000000.0}%2.2f msec")
     time
   }
   
-  refTime = run("Bare pull parser", 100, UnitJsonParser.parse(largeJsonSource))
-  run("Spray pull parser", 100, sprayPullParser.parse(largeJsonSource))
-  run("Original spray parser", 100, JsonParser(largeJsonSource))
+  println("Test JSON parsing performance")
+  refTime = run("Unit parser", 200, UnitJsonParser.parse(largeJsonSource))
+  run("Spray parser", 200, sprayParser.parse(largeJsonSource))
+  run("Spray parser (non-fast CharArrayReader)", 200, sprayParser.parse(new CharArrayReader(largeJsonSource)))
+  run("Spray parser (non-fast StringReader)", 200, sprayParser.parse(new StringReader(largeJsonSourceString)))
+  run("Original spray parser", 50, OriginalSprayParser(largeJsonSource))
 
 }

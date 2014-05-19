@@ -10,24 +10,31 @@
  */
 package org.scalastuff.json
 
+import java.io.Reader
+import java.io.StringReader
+import java.io.CharArrayReader
+
 class JsonParser[H <: JsonHandler](handler: H) {
 
-  private var s: Array[Char] = Array.empty
-  private var i: Int = 0
+  private var reader: Reader = null
+  private var pos: Int = 0
   private var c: Char = 0
   private val sb = new StringBuilder
 
   def parse(s: String): H#JsValue =
-    parse(s.toCharArray)
+    parse(new FastStringReader(s))
 
-  def parse(s: Array[Char]): H#JsValue = {
-    this.s = s
-    this.i = -1
+  def parse(s: Array[Char]): H#JsValue =
+    parse(new FastStringReader(s))
+
+  def parse(reader: Reader): H#JsValue = {
+    this.reader = reader
+    this.pos = 0
     next()
     whitespace()
     val result = jsonValue()
     whitespace()
-    if (c != 0)
+    if (c != -1.asInstanceOf[Char])
       exception("expected end of document")
     result
   }
@@ -208,14 +215,14 @@ class JsonParser[H <: JsonHandler](handler: H) {
 
   @inline
   private def next() {
-    i += 1
-    if (i < s.length) {
-      c = s(i)
-    } else {
-      c = 0
-    }
+    c = reader.read().asInstanceOf[Char]
+    pos += 1
   }
 
-  private def exception(message: String) =
-    throw new JsonParseException(new String(s), i, message)
+  private def exception(message: String) = {
+    val buffer = new Array[Char](40)
+    val size = reader.read(buffer)
+    val s = if (size < 0) "" else new String(buffer, 0, size)
+    throw new JsonParseException(s, pos, message)
+  }
 }
