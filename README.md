@@ -43,13 +43,20 @@ When the parser is not used by multiple threads, one can re-use a parser instanc
 
 #### Using a JsonHandler
 
-To use the streaming interface directly, one should implement the handler, and call the parser:
+To use the streaming interface directly, one should implement the handler, and call the parser. 
 
 ```scala
+  import java.io.Reader
   import org.scalastuff.json._
   val handler: JsonHandler = new MyJsonHandler
   val parser = new JsonParser(handler)
   def parse(s: String) = 
     parser.parse(s)
+  def parse(r: Reader) = 
+    parser.parse(r)
 ```
+
+Using a Reader in combination with a custom handler allows for true json streaming: no memory is allocated regardless of size of the input document.
+
+Note that json-parser ships with an optimized version of CharArrayReader and StringReader. Not using these, but letting the parser parse a JSON string or char-array directly, will result in a speedup of around 50%.    
 
