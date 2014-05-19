@@ -8,7 +8,7 @@ The parser is hand-crafted, resulting in very good performance. It's up to par w
 
 #### Support multiple JSON AST's
 
-The core parser is not tied to any particular AST implementation. Through the streaming interface, any AST can be built. The parser currently ships with a spray-json parser. 
+The core parser is not tied to any particular AST implementation. Through the streaming interface, any AST can be built. The parser currently ships with a spray-json parser, more will follow. 
 
 #### Provide streaming interface
 
