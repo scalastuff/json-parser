@@ -34,7 +34,7 @@ A parser is instantiated by providing a [handler](https://github.com/scalastuff/
 The parser has parse overloads:
 
 ```scala
-  def parse(s: Reader)
+  def parse(reader: Reader)
   def parse(source: String)
   def parse(source: Array[Char])
 ```
