@@ -43,9 +43,9 @@ object SprayJsonBuilder extends JsonHandler {
   def trueValue = 
     spray.json.JsTrue
   
-  def falseValue: JsValue =
+  def falseValue =
     spray.json.JsFalse
 
-  def nullValue: JsValue = 
+  def nullValue = 
     spray.json.JsNull
 }
