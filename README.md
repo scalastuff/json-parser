@@ -78,3 +78,9 @@ The [SprayJsonBuilder](https://github.com/scalastuff/json-parser/blob/master/src
 ## Roadmap
 
 - Allow for asynchronous, 'reactive' streaming. See [issue #3](https://github.com/scalastuff/json-parser/issues/3).
+
+## License
+
+This software is released under the Apache License, Version 2.0
+
+http://www.apache.org/licenses/LICENSE-2.0.html
