@@ -19,7 +19,7 @@ The core parser is not tied to a particular JSON AST (abstract syntax tree). Thr
 The json-parser can be obtained from maven central, cross-built against scala 2.10 and 2.11:
 
 ```scala
-  "org.scalastuff" %% "json-parser" % "1.1.1"
+  "org.scalastuff" %% "json-parser" % "1.1.2"
 ```
 
 ## Usage
