@@ -4,7 +4,7 @@ A minimalistic JSON parser for scala. It's goals:
 
 #### Fast
 
-The parser is hand-crafted, resulting in very good performance. It's up to par with Jackson, more than 350 times faster than the default json parser (that shipped with scala until 2.10), and more than 15 times faster than the Spray parser. (Running the tests will report timing information.)
+The parser is hand-crafted, resulting in very good performance. It's up to par with Jackson, more than 350 times faster than the default json parser (that shipped with scala until 2.10), and more than 15 times faster than the spray-json parser. (Running the tests will report timing information.)
 
 #### Streaming
 
