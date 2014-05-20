@@ -49,7 +49,7 @@ Note that a parser instance is NOT thread safe. It can be re-used though, and on
 
 ## Spray parser
 
-The parser ships with a built-in spray parser, targeting the spray AST:
+The parser ships with a built-in spray parser, targeting the spray-json AST:
 
 ```scala
   import spray.json.JsValue
