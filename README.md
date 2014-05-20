@@ -12,7 +12,7 @@ The parser streams its result into a json [handler](https://github.com/scalastuf
 
 #### Independent
 
-The core parser is not tied to any particular JSON AST (abstract syntax tree). Through the streaming interface, any AST can be built. The parser currently ships with a spray-json builder, more will follow. 
+The core parser is not tied to a particular JSON AST (abstract syntax tree). Through the streaming interface, any AST can be built. The parser currently ships with a spray-json builder, more will follow. 
 
 ## Getting started
 
