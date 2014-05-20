@@ -222,7 +222,7 @@ class JsonParser[H <: JsonHandler](handler: H) {
   private def exception(message: String) = {
     val buffer = new Array[Char](40)
     val size = reader.read(buffer)
-    val s = if (size < 0) "" else new String(buffer, 0, size)
-    throw new JsonParseException(s, pos, message)
+    val s = if (size <= 0) "" else new String(buffer, 0, size)
+    throw new JsonParseException(message, pos, s)
   }
 }
