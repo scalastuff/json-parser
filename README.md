@@ -31,7 +31,7 @@ A parser is instantiated by providing a [handler](https://github.com/scalastuff/
   val parser = new JsonParser(new MyJsonHandler)
 ```
 
-The parser has parse overloads:
+The parser has three parse overloads:
 
 ```scala
   def parse(reader: Reader)
