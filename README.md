@@ -75,3 +75,6 @@ A handler can use context objects for parsing objects and arrays. The parser doe
 
 The [SprayJsonBuilder](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/spray/SprayJsonBuilder.scala) is probably a good starting point when writing a custom handler.
 
+## Roadmap
+
+- Allow for asynchronous, 'reactive streaming'. See [issue #3](https://github.com/scalastuff/json-parser/issues/3).
