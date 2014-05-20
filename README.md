@@ -12,7 +12,7 @@ The parser streams its result into a json [handler](https://github.com/scalastuf
 
 #### Independent
 
-The core parser is not tied to any particular JSON AST (abstract syntax tree). Through the streaming interface, any AST can be built. The parser currently ships with a spray-json builder, more will follow. 
+The core parser is not tied to a particular JSON AST (abstract syntax tree). Through the streaming interface, any AST can be built. The parser currently ships with a spray-json builder, more will follow. 
 
 ## Getting started
 
@@ -43,7 +43,7 @@ The return type of these methods is determined by the provided handler.
 
 The `Reader` overload allows streaming some JSON input into the parser. The document will be processed character-by-character, the input will not be read into memory.
 
-The `String` and `Array[Char]` overloads are wrappers around the `Reader` overload, but they use an optimized reader, [FastStringReader](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/FastStringReader.scala). Compared to using `java.io.StringReader` and `java.io.CharArrayReader`, expect a speedup of around 50%.
+The `String` and `Array[Char]` overloads are wrappers around the `Reader` overload, but they use an optimized reader, [FastStringReader](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/FastStringReader.scala). Compared to using `java.io.StringReader` and `java.io.CharArrayReader`, expect a speedup of nearly 50%.
 
 Note that a parser instance is NOT thread safe. It can be re-used though, and one is advised to do so. 
 
@@ -64,6 +64,7 @@ It also has an 'object' interface, that adds some convenience. It creates a pars
   val result: JsValue = SprayJsonParser.parse(someJson)
 ```
 
+Note: to use this parser in the context of spray.io (e.g. in spray-routing), one should use an alternative implementation of `spray.httpx.SprayJsonSupport`. Providing such an implementation is out of scope for this project though.
 
 ## Using a JsonHandler
 
