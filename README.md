@@ -64,6 +64,7 @@ It also has an 'object' interface, that adds some convenience. It creates a pars
   val result: JsValue = SprayJsonParser.parse(someJson)
 ```
 
+Note: to use this parser in the context of spray.io (e.g. in spray-routing), one should use an alternative implementation of `spray.httpx.SprayJsonSupport`. Providing this implementation is out of scope for this project though.
 
 ## Using a JsonHandler
 
