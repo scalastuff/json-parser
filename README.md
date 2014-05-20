@@ -77,4 +77,4 @@ The [SprayJsonBuilder](https://github.com/scalastuff/json-parser/blob/master/src
 
 ## Roadmap
 
-- Allow for asynchronous, 'reactive streaming'. See [issue #3](https://github.com/scalastuff/json-parser/issues/3).
+- Allow for asynchronous, 'reactive' streaming. See [issue #3](https://github.com/scalastuff/json-parser/issues/3).
