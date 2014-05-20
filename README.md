@@ -1,16 +1,16 @@
 # json-parser
 
-Aims for the json parser:
+A minimalistic, independent JSON parser for scala. It's goals:
 
-#### As fast as possible
+#### Fast
 
 The parser is hand-crafted, resulting in very good performance. It's up to par with Jackson, more than 350 times faster than the default json parser (that shipped with scala until 2.10), and more than 15 times faster than the Spray parser. (Running the tests will report timing information.)
 
-#### Provide streaming interface
+#### Streaming
 
 The parser streams its result into a json [handler](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/JsonHandler.scala). The handler gets events from the parser and can act accordingly. It allows for memory-efficient processing of large data sets.
 
-#### Support multiple JSON AST's
+#### Independent
 
 The core parser is not tied to any particular AST implementation. Through the streaming interface, any AST can be built. The parser currently ships with a spray-json builder, more will follow. 
 
