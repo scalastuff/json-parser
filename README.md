@@ -72,5 +72,5 @@ Using a `Reader` in combination with a custom handler allows for true streamed J
 
 A handler can use context objects for parsing objects and arrays. The parser does not use these contexts other than passing it back to the handler. They are there to easy handler development. When not needed, a handler could simply return Unit. 
 
-The [SprayJsonBuilder](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/spray.SprayJsonBuilder.scala) is probably a good starting point when writing a custom handler.
+The [SprayJsonBuilder](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/spray/SprayJsonBuilder.scala) is probably a good starting point when writing a custom handler.
 
