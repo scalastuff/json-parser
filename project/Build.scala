@@ -22,7 +22,7 @@ object JsonBuild extends Build {
     publishArtifact in Test := false,
     pomIncludeRepository := { _ => false },
     licenses := Seq("The Apache Software Licence, Version 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0")),
-    homepage := Some(url("http://scalastuff.org")),
+    homepage := Some(url("https://github.com/scalastuff/json-parser")),
     publishTo := {
       if (version.value.trim.endsWith("SNAPSHOT"))
         Some("snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
@@ -45,7 +45,5 @@ object JsonBuild extends Build {
   val jsonParser = Project(id = "json-parser", base = file("."), settings = defaultSettings ++ publishSettings ++ Seq(
     libraryDependencies += "io.spray" %% "spray-json" % "1.2.6" % "optional",
     libraryDependencies += "org.specs2" %% "specs2" % "2.3.12" % "test",
-    resolvers += "spray repo" at "http://repo.spray.io",
-    resolvers ++= Seq("snapshots", "releases").map(Resolver.sonatypeRepo),
     mainClass in (Compile, run) := Some("org.scalastuff.json.PerformanceTests")))
 }
