@@ -68,5 +68,5 @@ It also has an 'object' interface, that adds some convenience, especially in a m
 ## Using a JsonHandler
 
 A [JsonHandler](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/JsonHandler.scala) is a call-back interface for parse events, comparable to SAX for XML.
-Using a `Reader` in combination with a custom handler allows for true json streaming: no memory is allocated regardless of size of the input document.
+Using a `Reader` in combination with a custom handler allows for true streamed JSON processing.
 
