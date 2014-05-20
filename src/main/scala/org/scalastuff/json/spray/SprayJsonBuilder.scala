@@ -18,7 +18,8 @@ object SprayJsonBuilder extends JsonHandler {
   type JsObjectContext = ListBuffer[(String, JsValue)]
   type JsArrayContext = ListBuffer[JsValue]
   
-  def startObject = new JsObjectContext
+  def startObject = 
+    new JsObjectContext
   
   def setValue(context: JsObjectContext, name: String, value: JsValue) = 
     context += ((name, value))
@@ -26,7 +27,8 @@ object SprayJsonBuilder extends JsonHandler {
   def endObject(context: JsObjectContext) = 
     new spray.json.JsObject(context.toMap)
 
-  def startArray = new JsArrayContext
+  def startArray = 
+    new JsArrayContext
   
   def addValue(context: JsArrayContext, value: JsValue) = 
     context += value
