@@ -1,6 +1,6 @@
 # json-parser
 
-A minimalistic, independent JSON parser for scala. It's goals:
+A minimalistic JSON parser for scala. It's goals:
 
 #### Fast
 
