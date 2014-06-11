@@ -1,21 +1,17 @@
 import sbt._
 import Keys._
-import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseKeys
-import com.typesafe.sbteclipse.plugin.EclipsePlugin.EclipseCreateSrc
 
-object JsonBuild extends Build {
+object JsonParserBuild extends Build {
 
   def defaultSettings =
     Project.defaultSettings ++
       Seq(
         sbtPlugin := false, 
         organization := "org.scalastuff",
-        version := "1.1.3-SNAPSHOT",
-        scalaVersion := "2.10.4",
-        crossScalaVersions := Seq("2.10.4", "2.11.0"),
-        scalacOptions ++= Seq("-deprecation", "-unchecked", "-encoding", "utf8", "-feature"),
-        EclipseKeys.createSrc := EclipseCreateSrc.Default + EclipseCreateSrc.Resource,
-        EclipseKeys.withSource := true)
+        version := "2.0-SNAPSHOT",
+        scalaVersion := "2.11.1",
+        crossScalaVersions := Seq("2.10.4", "2.11.1"),
+        scalacOptions ++= Seq("-deprecation", "-unchecked", "-encoding", "utf8", "-feature"))
           
   def publishSettings = Seq(
     publishMavenStyle := true,
@@ -43,7 +39,11 @@ object JsonBuild extends Build {
 
     
   val jsonParser = Project(id = "json-parser", base = file("."), settings = defaultSettings ++ publishSettings ++ Seq(
-    libraryDependencies += "io.spray" %% "spray-json" % "1.2.6" % "optional",
-    libraryDependencies += "org.specs2" %% "specs2" % "2.3.12" % "test",
-    mainClass in (Compile, run) := Some("org.scalastuff.json.PerformanceTests")))
+    libraryDependencies <++= scalaBinaryVersion {
+      case "2.11" => Seq(
+        "io.spray" % "spray-json_2.11.0-RC4" % "1.2.6" % "optional")
+      case _ => Seq(
+        "io.spray" %% "spray-json" % "1.2.6" % "optional")
+    },
+    libraryDependencies += "org.specs2" %% "specs2" % "2.3.12" % "test"))
 }

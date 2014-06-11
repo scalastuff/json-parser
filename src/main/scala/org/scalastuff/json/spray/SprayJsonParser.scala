@@ -12,18 +12,36 @@ package org.scalastuff.json.spray
 
 import org.scalastuff.json.JsonParser
 import java.io.Reader
+import spray.json.JsValue
 
-class SprayJsonParser extends JsonParser(SprayJsonBuilder)
+class SprayJsonParser {
+  val parser = new JsonParser(new SprayJsonBuilder)
+  def parse(s: String): JsValue = {
+    parser.parse(s)
+    result
+  }
+
+  def parse(s: Array[Char]) = {
+    parser.parse(s)
+    result
+  }
+
+  def parse(r: Reader) = {
+    parser.parse(r)
+    result
+  }
+  def result =
+    parser.handler.result
+}
 
 object SprayJsonParser {
   def parse(s: String) =
-    (new SprayJsonParser).parse(s)
+    new SprayJsonParser().parse(s)
 
   def parse(s: Array[Char]) =
-    (new SprayJsonParser).parse(s)
+    new SprayJsonParser().parse(s)
 
   def parse(r: Reader) =
-    (new SprayJsonParser).parse(r)
-
+    new SprayJsonParser().parse(r)
 }
 

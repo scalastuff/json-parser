@@ -11,43 +11,87 @@
 package org.scalastuff.json.spray
 
 import scala.collection.mutable.ListBuffer
+import spray.json._
+import SprayJsonBuilder._
 import org.scalastuff.json.JsonHandler
 
-object SprayJsonBuilder extends JsonHandler {
-  type JsValue = spray.json.JsValue
-  type JsObjectContext = ListBuffer[(String, JsValue)]
-  type JsArrayContext = ListBuffer[JsValue]
-  
-  def startObject = 
-    new JsObjectContext
-  
-  def setValue(context: JsObjectContext, name: String, value: JsValue) = 
-    context += ((name, value))
-  
-  def endObject(context: JsObjectContext) = 
-    new spray.json.JsObject(context.toMap)
+object SprayJsonBuilder {
 
-  def startArray = 
-    new JsArrayContext
-  
-  def addValue(context: JsArrayContext, value: JsValue) = 
-    context += value
-  
-  def endArray(context: JsArrayContext) = 
-    new spray.json.JsArray(context.toList)
+  private val nullObject = JsObject()
+  private val nullArray = JsArray()
 
-  def number(value: String) = 
-    spray.json.JsNumber(value)
+  private[spray] trait JsonHandlerContext {
+    def parent: JsonHandlerContext
+    def add(value: JsValue)
+    def member(name: String): Unit = Unit
+    def mkObject = nullObject
+    def mkArray = nullArray
+  }
+  private[spray] class RootContext extends JsonHandlerContext {
+    var result: JsValue = JsNull
+    def parent = throw new IllegalStateException
+    def add(value: JsValue) = result = value
+  }
+  private[spray] class ObjectContext(val parent: JsonHandlerContext) extends JsonHandlerContext {
+    var values = new ListBuffer[(String, JsValue)]
+    var member: String = ""
+    def add(value: JsValue) = values += ((member, value))
+    override def member(name: String) = this.member = name
+    override def mkObject = JsObject(values.toMap)
+  }
+  private[spray] class ArrayContext(val parent: JsonHandlerContext) extends JsonHandlerContext {
+    var values = new ListBuffer[JsValue]
+    def add(value: JsValue) = values += value
+    override def mkArray = JsArray(values.toList)
+  }
+}
 
-  def string(value: String) = 
-    spray.json.JsString(value)
-    
-  def trueValue = 
-    spray.json.JsTrue
-  
-  def falseValue =
-    spray.json.JsFalse
+class SprayJsonBuilder extends RootContext with JsonHandler {
 
-  def nullValue = 
-    spray.json.JsNull
+  private var context: JsonHandlerContext = this
+
+  def start() = {
+    context = this
+    result = JsNull
+  }
+
+  def end() = Unit
+
+  def startObject() =
+    context = new ObjectContext(context)
+
+  def startMember(name: String) =
+    context.member(name)
+
+  def endObject() = {
+    val value = context.mkObject
+    context = context.parent
+    context.add(value)
+  }
+
+  def startArray() =
+    context = new ArrayContext(context)
+
+  def endArray() = {
+    val value = context.mkArray
+    context = context.parent
+    context.add(value)
+  }
+
+  def number(value: String) =
+    context.add(JsNumber(value))
+
+  def string(value: String) =
+    context.add(JsString(value))
+
+  def trueValue() =
+    context.add(JsTrue)
+
+  def falseValue() =
+    context.add(JsFalse)
+
+  def nullValue() =
+    context.add(JsNull)
+
+  def error(message: String, pos: Int, excerpt: String) = Unit
 }

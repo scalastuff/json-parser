@@ -11,38 +11,41 @@
 package org.scalastuff.json
 
 import java.io.Reader
-import java.io.StringReader
-import java.io.CharArrayReader
 
-class JsonParser[H <: JsonHandler](handler: H) {
+class JsonParser[H <: JsonHandler](val handler: H) {
 
   private var reader: Reader = null
   private var pos: Int = 0
   private var c: Char = 0
   private val sb = new StringBuilder
 
-  def parse(s: String): H#JsValue =
+  def parse(s: String): Unit =
     parse(new FastStringReader(s))
 
-  def parse(s: Array[Char]): H#JsValue =
+  def parse(s: Array[Char]): Unit =
     parse(new FastStringReader(s))
 
-  def parse(reader: Reader): H#JsValue = {
-    this.reader = reader
-    this.pos = 0
-    next()
-    whitespace()
-    val result = jsonValue()
-    whitespace()
-    if (c != -1.asInstanceOf[Char])
-      exception("expected end of document")
-    result
+  def parse(reader: Reader): Unit = {
+    handler.start()
+    try {
+      this.reader = reader
+      this.pos = 0
+      next()
+      whitespace()
+      val result = jsonValue()
+      whitespace()
+      if (c != -1.asInstanceOf[Char])
+        exception("expected end of document")
+      result
+    } finally {
+      handler.end()
+    }
   }
 
-  private def jsonObject(): Option[handler.JsValue] = {
+  private def jsonObject() = {
     if (c == '{') {
       next()
-      val ab = handler.startObject
+      handler.startObject()
       whitespace()
       while (c != '}') {
         whitespace()
@@ -53,8 +56,8 @@ class JsonParser[H <: JsonHandler](handler: H) {
               exception("Expected ':'")
             next()
             whitespace()
-            val v: handler.JsValue = jsonValue()
-            handler.setValue(ab, name, v)
+            handler.startMember(name)
+            jsonValue()
           case None =>
             exception("Expected name")
         }
@@ -64,19 +67,19 @@ class JsonParser[H <: JsonHandler](handler: H) {
           exception("expected '}'")
       }
       next()
-      Some(handler.endObject(ab))
+      Some(handler.endObject())
     }
     else None
   }
 
-  private def jsonArray(): Option[handler.JsValue] = {
+  private def jsonArray() = {
     if (c == '[') {
       next()
-      val lb = handler.startArray
+      handler.startArray()
       whitespace()
       while (c != ']') {
         whitespace()
-        handler.addValue(lb, jsonValue())
+        jsonValue()
         whitespace()
         if (c == ',')
           next()
@@ -84,36 +87,36 @@ class JsonParser[H <: JsonHandler](handler: H) {
           exception("expected ']'")
       }
       next()
-      Some(handler.endArray(lb))
+      Some(handler.endArray())
     }
     else None
   }
 
-  private def jsonValue(): handler.JsValue =
+  private def jsonValue(): Unit =
     jsonString() orElse
       jsonNumber() orElse
       jsonObject() orElse
       jsonArray() orElse
       jsonConstant() getOrElse exception("value expected")
 
-  private def jsonString(): Option[handler.JsValue] =
+  private def jsonString(): Option[Unit] =
     string().map(handler.string)
 
-  private def jsonConstant(): Option[handler.JsValue] = {
+  private def jsonConstant(): Option[Unit] = {
     if (c == 't') {
       for (cc <- "true")
         if (c == cc) next() else exception("expected 'true'")
-      Some(handler.trueValue)
+      Some(handler.trueValue())
     }
     else if (c == 'f') {
       for (cc <- "false")
         if (c == cc) next() else exception("expected 'false'")
-      Some(handler.falseValue)
+      Some(handler.falseValue())
     }
     else if (c == 'n') {
       for (cc <- "null")
         if (c == cc) next() else exception("expected 'null'")
-      Some(handler.nullValue)
+      Some(handler.nullValue())
     }
     else None
   }
@@ -138,9 +141,9 @@ class JsonParser[H <: JsonHandler](handler: H) {
               next()
               val code =
                 (hexDigit() << 12) +
-                (hexDigit() << 8) +
-                (hexDigit() << 4) +
-                hexDigit()
+                  (hexDigit() << 8) +
+                  (hexDigit() << 4) +
+                  hexDigit()
               sb.append(code.asInstanceOf[Char])
             case _ => exception("expected escape char")
           }
@@ -152,12 +155,12 @@ class JsonParser[H <: JsonHandler](handler: H) {
       if (c != '"')
         exception("expected '\"'")
       next()
-      Some(sb.toString)
+      Some(sb.toString())
     }
     else None
   }
 
-  private def jsonNumber(): Option[handler.JsValue] = {
+  private def jsonNumber(): Option[Unit] = {
     sb.setLength(0)
     if (c == '-') {
       sb.append(c)
@@ -187,7 +190,7 @@ class JsonParser[H <: JsonHandler](handler: H) {
         next()
       }
     }
-    if (sb.length() != 0) Some(handler.number(sb.toString))
+    if (sb.length() != 0) Some(handler.number(sb.toString()))
     else None
   }
 
@@ -223,6 +226,7 @@ class JsonParser[H <: JsonHandler](handler: H) {
     val buffer = new Array[Char](40)
     val size = reader.read(buffer)
     val s = if (size <= 0) "" else new String(buffer, 0, size)
+    handler.error(message, pos, s)
     throw new JsonParseException(message, pos, s)
   }
 }
