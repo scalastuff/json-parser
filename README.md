@@ -19,7 +19,7 @@ The core parser is not tied to a particular JSON AST (abstract syntax tree). Thr
 The json-parser can be obtained from maven central, cross-built against scala 2.10 and 2.11:
 
 ```scala
-  "org.scalastuff" %% "json-parser" % "1.1.2"
+  "org.scalastuff" %% "json-parser" % "2.0.1"
 ```
 
 ## Usage
@@ -71,9 +71,19 @@ Note: to use this parser in the context of spray.io (e.g. in spray-routing), one
 A [JsonHandler](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/JsonHandler.scala) is a call-back interface for parse events, comparable to SAX for XML.
 Using a `Reader` in combination with a custom handler allows for true streamed JSON processing.
 
-A handler can use context objects for parsing objects and arrays. The parser does not use these contexts other than passing it back to the handler. They are there to ease handler development. When not needed, a handler could simply return Unit. 
-
 The [SprayJsonBuilder](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/spray/SprayJsonBuilder.scala) is probably a good starting point when writing a custom handler.
+
+## JsonPrinter
+
+The [JsonPrinter](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/JsonPrinter.scala) pretty-prints json to a given writer. It is a handler, so it can be fed to the parser. The following example illustrates how file data can can be pretty-printed and directly streamed to an output stream:
+
+```scala
+    val reader = new FileReader("data.json")
+    val writer = new OutputStreamWriter(System.out)
+    val parser = new JsonParser(new JsonPrinter(writer))
+    parser.parse(reader)
+    writer.close()
+```
 
 ## Roadmap
 
