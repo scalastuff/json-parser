@@ -23,6 +23,7 @@ class JsonPrinter(writer: Writer, indent: Int) extends JsonHandler {
   def this(builder: StringBuilder) = this(new StringBuilderWriter(builder), 2)
 
   private var context = new Context(null, 0, () => Unit)
+  private val sb = new StringBuilder
 
   private def writeIndent() =
     for (i <- 1 to context.indent) writer.append(' ')
@@ -71,8 +72,23 @@ class JsonPrinter(writer: Writer, indent: Int) extends JsonHandler {
   }
 
   def string(s: String) {
+    sb.clear()
+    s foreach {
+      case '"' => sb.append("\\\"")
+      case '\\' => sb.append("\\\\")
+      case '\b' => sb.append("\\b")
+      case '\f' => sb.append("\\f")
+      case '\n' => sb.append("\\n")
+      case '\r' => sb.append("\\r")
+      case '\t' => sb.append("\\t")
+      case c if c < 0x20 => sb.append("\\u000").append(Integer.toHexString(c))
+//      case c if c <= 0xFF => sb.append("\\u00").append(Integer.toHexString(c))
+//      case c if c <= 0xFFF => sb.append("\\u0").append(Integer.toHexString(c))
+//      case c => sb.append("\\u").append(Integer.toHexString(c))
+      case c => sb.append(c)
+    }
     context.before()
-    writer.append('\"').append(s).append('\"')
+    writer.append('\"').append(sb.toString()).append('\"')
   }
 
   def number(s: String) {
@@ -92,5 +108,8 @@ class JsonPrinter(writer: Writer, indent: Int) extends JsonHandler {
     writer.append("null")
   }
 
-  def error(message: String, pos: Int, excerpt: String): Unit = Unit
+  def error(message: String, line: Int, pos: Int, excerpt: String): Unit = Unit
+
+  def close() =
+    writer.close()
 }

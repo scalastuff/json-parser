@@ -1,5 +1,7 @@
 package org.scalastuff.json
 
+import java.io.{FileWriter, InputStreamReader}
+
 import org.parboiled.common.FileUtils
 import org.specs2.mutable.Specification
 import org.scalastuff.json.spray.SprayJsonParser
@@ -25,6 +27,9 @@ class JsonWriterSpec extends Specification {
     }
     "print some string" in {
       print(_.string("hi")) mustEqual "\"hi\""
+    }
+    "print unicode string" in {
+      print(_.string("\u1234")) mustEqual "\"\u1234\""
     }
     "print some number" in {
       print(_.number("123.45")) mustEqual "123.45"
@@ -83,6 +88,17 @@ class JsonWriterSpec extends Specification {
         h.endArray()
         h.endObject()
       } mustEqual "{\n  \"name\" : \"Ruud\",\n  \"addresses\" : [\n    {\n      \"country\" : \"Netherlands\"\n    }\n  ]\n}"
+    }
+    "print the test document" in {
+      val largeJsonSource = FileUtils.readAllCharsFromResource("test.json")
+      val sb = new StringBuilder
+      val parser = new JsonParser(new JsonPrinter(sb))
+      parser.parse(largeJsonSource)
+      val written1 = sb.toString()
+      sb.clear()
+      parser.parse(written1)
+      val written2 = sb.toString()
+      written1 mustEqual written2
     }
   }
 }

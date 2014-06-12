@@ -10,5 +10,5 @@
  */
 package org.scalastuff.json
 
-class JsonParseException(val msg: String, val pos: Int, val excerpt: String) 
-  extends Exception(s"Json parse exception: $msg at position $pos: '$excerpt'")
+class JsonParseException(val msg: String, val line: Int, val pos: Int, val excerpt: String)
+  extends Exception(s"Json parse exception: $msg at line $line position $pos: '$excerpt'")

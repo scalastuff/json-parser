@@ -15,7 +15,8 @@ import java.io.Reader
 class JsonParser[H <: JsonHandler](val handler: H) {
 
   private var reader: Reader = null
-  private var pos: Int = 0
+  private var line: Int = 1
+  private var linePos: Int = 1
   private var c: Char = 0
   private val sb = new StringBuilder
 
@@ -26,15 +27,20 @@ class JsonParser[H <: JsonHandler](val handler: H) {
     parse(new FastStringReader(s))
 
   def parse(reader: Reader): Unit = {
-    this.reader = reader
-    this.pos = 0
-    next()
-    whitespace()
-    val result = jsonValue()
-    whitespace()
-    if (c != -1.asInstanceOf[Char])
-      exception("expected end of document")
-    result
+    try {
+      this.reader = reader
+      this.line = 1
+      this.linePos = 1
+      next()
+      whitespace()
+      jsonValue()
+      whitespace()
+      if (c != -1.asInstanceOf[Char])
+        exception("expected end of document")
+    } finally {
+      reader.close()
+      this.reader = null
+    }
   }
 
   private def jsonObject() = {
@@ -190,9 +196,21 @@ class JsonParser[H <: JsonHandler](val handler: H) {
   }
 
   @inline
-  private def whitespace() =
-    while (Character.isWhitespace(c))
-      next()
+  private def whitespace() = {
+    var more = true
+    while (more)
+      c match {
+        case '\n' => line += 1; linePos = 1; next()
+        case '\r' => next()
+        case '\t' => next()
+        case '\f' => next()
+        case ' ' => next()
+        case '\u00A0' => next()
+        case '\u2007' => next()
+        case '\u202F' => next()
+        case _ => more = false
+      }
+    }
 
   private def hexDigit(): Int = {
     val m = c
@@ -214,14 +232,14 @@ class JsonParser[H <: JsonHandler](val handler: H) {
   @inline
   private def next() {
     c = reader.read().asInstanceOf[Char]
-    pos += 1
+    linePos += 1
   }
 
   private def exception(message: String) = {
     val buffer = new Array[Char](40)
     val size = reader.read(buffer)
     val s = if (size <= 0) "" else new String(buffer, 0, size)
-    handler.error(message, pos, s)
-    throw new JsonParseException(message, pos, s)
+    handler.error(message, line, linePos, s)
+    throw new JsonParseException(message, line, linePos, s)
   }
 }

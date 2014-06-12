@@ -54,15 +54,16 @@ object PerformanceTests extends App with AbstractPerformanceTest {
   println(run("Spray parser", 200, sprayParser.parse(largeJsonSource)))
   println(run("Spray parser (non-fast CharArrayReader)", 200, sprayParser.parse(new CharArrayReader(largeJsonSource))))
   println(run("Spray parser (non-fast StringReader)", 200, sprayParser.parse(new StringReader(largeJsonSourceString))))
-  println(run("Original spray parser", 50, OriginalSprayParser(largeJsonSource)))
+  println(run("Original spray parser", 20, OriginalSprayParser(largeJsonSource)))
 
 }
 
 class PerformanceTests extends Specification with AbstractPerformanceTest {
+  sequential
   "The SprayJsonParser performance" should {
-    run("Unit parser", 200, UnitJsonParser.parse(largeJsonSource)) in { 1 mustEqual 1 }
-    refTime = lastTime
     run("Spray parser", 200, sprayParser.parse(largeJsonSource)) in { 1 mustEqual 1 }
+    refTime = lastTime
+    run("Unit parser", 200, UnitJsonParser.parse(largeJsonSource)) in { 1 mustEqual 1 }
     run("Spray parser (non-fast CharArrayReader)", 200, sprayParser.parse(new CharArrayReader(largeJsonSource))) in { 1 mustEqual 1 }
     run("Spray parser (non-fast StringReader)", 200, sprayParser.parse(new StringReader(largeJsonSourceString))) in { 1 mustEqual 1 }
     run("Original spray parser", 50, OriginalSprayParser(largeJsonSource)) in { 1 mustEqual 1 }

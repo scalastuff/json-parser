@@ -27,7 +27,7 @@ object UnitJsonHandler extends JsonHandler {
   def falseValue() = Unit
   def nullValue() = Unit
 
-  def error(message: String, pos: Int, excerpt: String): Unit = Unit
+  def error(message: String, line: Int, pos: Int, excerpt: String): Unit = Unit
 }
 
 object UnitJsonParser extends JsonParser(UnitJsonHandler)

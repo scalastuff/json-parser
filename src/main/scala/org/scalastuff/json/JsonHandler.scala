@@ -25,5 +25,5 @@ trait JsonHandler {
   def falseValue()
   def nullValue()
 
-  def error(message: String, pos: Int, excerpt: String)
+  def error(message: String, line: Int, pos: Int, excerpt: String)
 }

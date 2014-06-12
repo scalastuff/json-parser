@@ -91,5 +91,5 @@ class SprayJsonBuilder extends RootContext with JsonHandler {
   def nullValue() =
     context.add(JsNull)
 
-  def error(message: String, pos: Int, excerpt: String) = Unit
+  def error(message: String, line: Int, pos: Int, excerpt: String) = Unit
 }
