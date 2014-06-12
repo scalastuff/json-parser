@@ -27,9 +27,6 @@ class JsonPrinter(writer: Writer, indent: Int) extends JsonHandler {
   private def writeIndent() =
     for (i <- 1 to context.indent) writer.append(' ')
 
-  def start() = Unit
-  def end() = Unit
-
   def startObject() {
     context.before()
     writer.append("{")

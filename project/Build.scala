@@ -8,7 +8,7 @@ object JsonParserBuild extends Build {
       Seq(
         sbtPlugin := false, 
         organization := "org.scalastuff",
-        version := "2.0-SNAPSHOT",
+        version := "2.0.1",
         scalaVersion := "2.11.1",
         crossScalaVersions := Seq("2.10.4", "2.11.1"),
         scalacOptions ++= Seq("-deprecation", "-unchecked", "-encoding", "utf8", "-feature"))

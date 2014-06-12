@@ -17,42 +17,43 @@ import spray.json._
  * Translates spray-json DOM elements to call on a json handler.
  */
 class SprayJsonHandler(val handler: JsonHandler) {
-  def handle(value: JsValue) {
+
+  def apply(value: JsValue) {
     value match {
       case null => handler.nullValue()
       case JsNull => handler.nullValue()
-      case obj: JsObject => handle(obj)
-      case arr: JsArray => handle(arr)
-      case s: JsString => handle(s)
-      case n: JsNumber => handle(n)
-      case b: JsBoolean => handle(b)
+      case obj: JsObject => apply(obj)
+      case arr: JsArray => apply(arr)
+      case s: JsString => apply(s)
+      case n: JsNumber => apply(n)
+      case b: JsBoolean => apply(b)
     }
   }
 
-  def handle(obj: JsObject) {
+  def apply(obj: JsObject) {
     handler.startObject()
     for ((name, value) <- obj.fields) {
       handler.startMember(name)
-      handle(value)
+      apply(value)
     }
     handler.endObject()
   }
 
-  def handle(arr: JsArray) {
-    handler.startObject()
+  def apply(arr: JsArray) {
+    handler.startArray()
     for (value <- arr.elements) {
-      handle(value)
+      apply(value)
     }
-    handler.endObject()
+    handler.endArray()
   }
 
-  def handle(s: JsString) =
+  def apply(s: JsString) =
     handler.string(s.value)
 
-  def handle(n: JsNumber) =
+  def apply(n: JsNumber) =
     handler.number(n.value.toString())
 
-  def handle(t: JsBoolean) =
+  def apply(t: JsBoolean) =
     if (t.value) handler.trueValue()
     else handler.falseValue()
 }

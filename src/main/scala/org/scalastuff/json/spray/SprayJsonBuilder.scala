@@ -50,12 +50,10 @@ class SprayJsonBuilder extends RootContext with JsonHandler {
 
   private var context: JsonHandlerContext = this
 
-  def start() = {
+  def reset() = {
     context = this
     result = JsNull
   }
-
-  def end() = Unit
 
   def startObject() =
     context = new ObjectContext(context)

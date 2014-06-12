@@ -26,20 +26,15 @@ class JsonParser[H <: JsonHandler](val handler: H) {
     parse(new FastStringReader(s))
 
   def parse(reader: Reader): Unit = {
-    handler.start()
-    try {
-      this.reader = reader
-      this.pos = 0
-      next()
-      whitespace()
-      val result = jsonValue()
-      whitespace()
-      if (c != -1.asInstanceOf[Char])
-        exception("expected end of document")
-      result
-    } finally {
-      handler.end()
-    }
+    this.reader = reader
+    this.pos = 0
+    next()
+    whitespace()
+    val result = jsonValue()
+    whitespace()
+    if (c != -1.asInstanceOf[Char])
+      exception("expected end of document")
+    result
   }
 
   private def jsonObject() = {

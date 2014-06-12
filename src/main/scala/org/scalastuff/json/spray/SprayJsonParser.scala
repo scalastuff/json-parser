@@ -15,18 +15,23 @@ import java.io.Reader
 import spray.json.JsValue
 
 class SprayJsonParser {
-  val parser = new JsonParser(new SprayJsonBuilder)
+
+  private val parser = new JsonParser(new SprayJsonBuilder)
+
   def parse(s: String): JsValue = {
+    parser.handler.reset()
     parser.parse(s)
     result
   }
 
   def parse(s: Array[Char]) = {
+    parser.handler.reset()
     parser.parse(s)
     result
   }
 
   def parse(r: Reader) = {
+    parser.handler.reset()
     parser.parse(r)
     result
   }

@@ -12,9 +12,6 @@ package org.scalastuff.json
 
 trait JsonHandler {
 
-  def start()
-  def end()
-
   def startObject()
   def startMember(name: String)
   def endObject()
