@@ -75,7 +75,7 @@ The [SprayJsonBuilder](https://github.com/scalastuff/json-parser/blob/master/src
 
 ## JsonPrinter
 
-The [JsonPrinter](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/JsonPrinter.scala) pretty-prints json to a given writer. It is a handler, so it supports streaming. A json-printer can be fed to the parser, as the following example illustrates. Some input data is directly streamed to System.out:
+The [JsonPrinter](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/JsonPrinter.scala) pretty-prints json to a given writer. It is a handler, so it can be fed to the parser. The following example illustrates how file data can can be pretty-printed and directly streamed to an output stream:
 
 ```scala
     val reader = new FileReader("data.json")
