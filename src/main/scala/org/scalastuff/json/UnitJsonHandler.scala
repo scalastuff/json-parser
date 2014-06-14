@@ -10,10 +10,9 @@
  */
 package org.scalastuff.json
 
-object UnitJsonHandler extends JsonHandler {
-  
-  def start() = Unit
-  def end() = Unit
+object UnitJsonHandler extends UnitJsonHandler
+
+class UnitJsonHandler extends JsonHandler {
 
   def startObject() = Unit
   def startMember(name: String): Unit = Unit
