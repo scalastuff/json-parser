@@ -64,7 +64,7 @@ It also has an 'object' interface, that adds some convenience. It creates a pars
 
 Note: to use this parser in the context of spray.io (e.g. in spray-routing), one should use an alternative implementation of `spray.httpx.SprayJsonSupport`. Providing such an implementation is out of scope for this project though.
 
-## Using a JsonHandler
+## Writing a JsonHandler
 
 A [JsonHandler](https://github.com/scalastuff/json-parser/blob/master/src/main/scala/org/scalastuff/json/JsonHandler.scala) is a call-back interface for parse events, comparable to SAX for XML.
 Using a `Reader` in combination with a custom handler allows for true streamed JSON processing.
